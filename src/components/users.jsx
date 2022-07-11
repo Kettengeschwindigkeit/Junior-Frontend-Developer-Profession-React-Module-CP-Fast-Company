@@ -1,14 +1,11 @@
 import { useState } from 'react'
 import api from '../api'
 
-
 const Users = () => {
-
-    const [users, setUsers] = useState(api.users.fetchAll())
+    const [users, setUsers] = useState(api.users.fetchAll());
 
     const handleDelete = (userId) => {
-        console.log(userId)
-        setUsers((prevState) => prevState.filter(user => user._id !== userId))
+        setUsers((prevState) => prevState.filter(user => user._id !== userId));
     }
 
     const renderPhrase = () => {
@@ -23,9 +20,8 @@ const Users = () => {
         <>
             <h2>{renderPhrase()}</h2>
             <table className="table">
-                {users.length === 0
-                    ? null
-                    : <thead>
+                {users.length > 0
+                    && <thead>
                         <tr>
                             <th scope="col">Имя</th>
                             <th scope="col">Качества</th>
@@ -38,9 +34,10 @@ const Users = () => {
                 }
                 <tbody>
                     {users.map(user => (
-                        <tr key={user.name}>
+                        <tr key={user.name}> // тут надо уникальный индетификатор
                             <td>{user.name}</td>
-                            <td>{user.qualities.map(q => <span key={q.name} className={`badge bg-${q.color} m-1`}>{q.name}&nbsp;</span>)}</td>
+                            <td>{user.qualities.map(q => <span key={q.name} // тут надо уникальный индетификатор 
+                                className={`badge bg-${q.color} m-1`}>{q.name}&nbsp;</span>)}</td>
                             <td>{user.profession.name}</td>
                             <td>{user.completedMeetings}</td>
                             <td>{user.rate}</td>
