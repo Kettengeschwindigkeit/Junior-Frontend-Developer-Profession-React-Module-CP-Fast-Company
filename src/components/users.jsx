@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import api from '../api'
 
-
 const Users = () => {
-
-    const [users, setUsers] = useState(api.users.fetchAll())
+    const [users, setUsers] = useState(api.users.fetchAll());
 
     const handleDelete = (userId) => {
         setUsers((prevState) => prevState.filter(user => user._id !== userId))
@@ -22,9 +20,8 @@ const Users = () => {
         <>
             <h2>{renderPhrase()}</h2>
             <table className="table">
-                {users.length === 0
-                    ? null
-                    : <thead>
+                {users.length > 0
+                    && <thead>
                         <tr>
                             <th scope="col">Имя</th>
                             <th scope="col">Качества</th>
