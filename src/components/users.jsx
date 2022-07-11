@@ -7,7 +7,6 @@ const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
 
     const handleDelete = (userId) => {
-        console.log(userId)
         setUsers((prevState) => prevState.filter(user => user._id !== userId))
     }
 
@@ -37,10 +36,10 @@ const Users = () => {
                     </thead>
                 }
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.name}>
+                    {users.map((user, i) => (
+                        <tr key={i}>
                             <td>{user.name}</td>
-                            <td>{user.qualities.map(q => <span key={q.name} className={`badge bg-${q.color} m-1`}>{q.name}&nbsp;</span>)}</td>
+                            <td>{user.qualities.map((q, i) => <span key={i} className={`badge bg-${q.color} m-1`}>{q.name}&nbsp;</span>)}</td>
                             <td>{user.profession.name}</td>
                             <td>{user.completedMeetings}</td>
                             <td>{user.rate}</td>
