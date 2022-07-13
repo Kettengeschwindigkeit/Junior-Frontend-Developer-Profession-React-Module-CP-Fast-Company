@@ -34,7 +34,7 @@ const Users = () => {
                 }
                 <tbody>
                     {users.map((user, i) => (
-                        <tr key={i}>
+                        <tr key={i}> // не стоит задавать key через index, сразу видно, что ты не совсем понимаешь зачем он нужен
                             <td>{user.name}</td>
                             <td>{user.qualities.map((q, i) => <span key={i} className={`badge bg-${q.color} m-1`}>{q.name}&nbsp;</span>)}</td>
                             <td>{user.profession.name}</td>
