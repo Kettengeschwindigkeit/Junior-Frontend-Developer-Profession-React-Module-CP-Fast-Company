@@ -1,11 +1,16 @@
+import Pagination from "./pagination"
 import User from "./user"
 
 const Users = (props) => {
-
+    const count = props.users.length
+    const pageSize = 4
+    const handlePageChange = (pageIndex) => {
+        console.log("page: ", pageIndex)
+    }
     return (
         <>
             <table className="table">
-                {props.users.length > 0
+                {count > 0
                     && <thead>
                         <tr>
                             <th scope="col">Имя</th>
@@ -22,6 +27,7 @@ const Users = (props) => {
                     {props.users.map(user => <User key={user._id} user={user} onDelete={props.onDelete} bookmark={user.bookmark} />)}
                 </tbody>
             </table>
+            <Pagination itemsCount={count} pageSize={pageSize} onPageChange={handlePageChange} />
         </>
     )
 }
