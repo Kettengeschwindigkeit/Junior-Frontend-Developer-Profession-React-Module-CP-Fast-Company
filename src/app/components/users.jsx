@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
@@ -8,9 +8,13 @@ import GroupList from "./groupList";
 
 const Users = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions] = useState(api.professions.fetchAll());
+    const [professions, setProfession] = useState(api.professions.fetchAll());
     const count = props.users.length;
     const pageSize = 4;
+
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfession(data));
+    }, []);
 
     const handleProffessionSelect = (params) => {
         console.log(params);
