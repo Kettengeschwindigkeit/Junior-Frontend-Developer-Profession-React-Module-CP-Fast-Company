@@ -9,6 +9,7 @@ import GroupList from "./groupList";
 const Users = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState(api.professions.fetchAll());
+    const [selectedProf, setSelectedProf] = useState();
     const count = props.users.length;
     const pageSize = 4;
 
@@ -16,8 +17,8 @@ const Users = (props) => {
         api.professions.fetchAll().then((data) => setProfession(data));
     }, []);
 
-    const handleProffessionSelect = (params) => {
-        console.log(params);
+    const handleProffessionSelect = item => {
+        setSelectedProf(item);
     };
 
     console.log(professions);
@@ -31,7 +32,14 @@ const Users = (props) => {
 
     return (
         <>
-            {professions && <GroupList items={professions} onItemSelect={handleProffessionSelect} valueProperty="_id" contentProperty="name" /> }
+            {professions && (
+                <GroupList
+                    selectedItem={selectedProf}
+                    items={professions}
+                    onItemSelect={handleProffessionSelect}
+                    valueProperty="_id"
+                    contentProperty="name" />
+            )}
             <table className="table">
                 {count > 0 && (
                     <thead>
