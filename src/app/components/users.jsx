@@ -31,7 +31,7 @@ const Users = (props) => {
 
     return (
         <>
-            <GroupList items={professions} onItemSelect={handleProffessionSelect} />
+            {professions && <GroupList items={professions} onItemSelect={handleProffessionSelect} valueProperty="_id" contentProperty="name" /> }
             <table className="table">
                 {count > 0 && (
                     <thead>
