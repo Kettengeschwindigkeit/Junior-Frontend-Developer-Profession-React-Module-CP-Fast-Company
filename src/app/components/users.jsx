@@ -3,6 +3,7 @@ import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
 import PropTypes from "prop-types";
+import GroupList from "./groupList";
 
 const Users = (props) => {
     const count = props.users.length;
@@ -18,6 +19,7 @@ const Users = (props) => {
 
     return (
         <>
+            <GroupList />
             <table className="table">
                 {count > 0 && (
                     <thead>
