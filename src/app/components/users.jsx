@@ -6,11 +6,11 @@ import api from "../api";
 import PropTypes from "prop-types";
 import GroupList from "./groupList";
 
-const Users = (props) => {
+const Users = ({ users: allUsers, onDelete }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState(api.professions.fetchAll());
     const [selectedProf, setSelectedProf] = useState();
-    const count = props.users.length;
+    const count = allUsers.length;
     const pageSize = 4;
 
     useEffect(() => {
@@ -28,7 +28,8 @@ const Users = (props) => {
         setCurrentPage(pageIndex);
     };
 
-    const userCrop = paginate(props.users, currentPage, pageSize);
+    const filteredUsers = selectedProf ? allUsers.filter((user) => user.profession === selectedProf) : allUsers;
+    const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
     return (
         <>
@@ -59,7 +60,7 @@ const Users = (props) => {
                         <User
                             key={user._id}
                             user={user}
-                            onDelete={props.onDelete}
+                            onDelete={onDelete}
                             bookmark={user.bookmark}
                         />
                     ))}
