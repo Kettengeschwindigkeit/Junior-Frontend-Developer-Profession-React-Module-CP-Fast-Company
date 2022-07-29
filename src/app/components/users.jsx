@@ -9,7 +9,7 @@ import SearchStatus from "../components/searchStatus";
 
 const Users = ({ users: allUsers, onDelete }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState(api.professions.fetchAll());
+    const [professions, setProfession] = useState([]);
     const [selectedProf, setSelectedProf] = useState();
     const pageSize = 4;
 
@@ -25,14 +25,12 @@ const Users = ({ users: allUsers, onDelete }) => {
         setSelectedProf(item);
     };
 
-    console.log(professions);
-
     const handlePageChange = (pageIndex) => {
         console.log("page: ", pageIndex);
         setCurrentPage(pageIndex);
     };
 
-    const filteredUsers = selectedProf ? allUsers.filter((user) => user.profession === selectedProf) : allUsers;
+    const filteredUsers = selectedProf ? allUsers.filter(user => user.profession.name === selectedProf.name) : allUsers;
     const count = filteredUsers.length;
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
     const clearFilter = () => {
