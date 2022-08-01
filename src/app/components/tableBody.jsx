@@ -1,0 +1,27 @@
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+
+// const twoDArray = [
+//     [ "[i][j]",   "[i][j+1]",   "...",   "[i][j+n]"],
+//     [ "[i+1][j]", "[i+1][j+1]", "...", "[i+1][j+n]"],
+//     [ "...",      "...",        "...",        "..."],
+//     [ "[i+m][j]", "[i+m][j+1]", "...", "[i+m][j+n]"],
+// ];
+
+// for (let i = 0; i < twoDArray.length; i++) {
+//     for (let j = 0; j < twoDArray[i].length; j++) {}
+// }
+
+const TableBody = ({ data, columns }) => {
+    return <tbody>
+        {data.map((item) => <tr key={item._id}>{Object.keys(columns).map((column) => <td key={column}>{_.get(item, columns[column].path)}</td>)}</tr>)}
+    </tbody>;
+};
+
+TableBody.propTypes = {
+    data: PropTypes.array.isRequired,
+    columns: PropTypes.object.isRequired
+};
+
+export default TableBody;
