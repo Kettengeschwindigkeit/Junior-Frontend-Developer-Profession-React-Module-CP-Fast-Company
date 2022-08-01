@@ -30,6 +30,10 @@ const Users = ({ users: allUsers, onDelete }) => {
         setCurrentPage(pageIndex);
     };
 
+    const handleSort = (item) => {
+        console.log(item);
+    };
+
     const filteredUsers = selectedProf ? allUsers.filter(user => user.profession.name === selectedProf.name) : allUsers;
     const count = filteredUsers.length;
     const usersCrop = paginate(filteredUsers, currentPage, pageSize);
@@ -53,7 +57,7 @@ const Users = ({ users: allUsers, onDelete }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus users={filteredUsers} />
-                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} />}
+                {count > 0 && <UsersTable users={usersCrop} onSort={handleSort} onDelete={onDelete} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={count}
