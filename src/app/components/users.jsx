@@ -60,7 +60,7 @@ const Users = ({ users: allUsers, onDelete }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus users={filteredUsers} />
-                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} onSort={handleSort} currentSort={sortBy} />}
+                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} onSort={handleSort} selectedSort={sortBy} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={count}
