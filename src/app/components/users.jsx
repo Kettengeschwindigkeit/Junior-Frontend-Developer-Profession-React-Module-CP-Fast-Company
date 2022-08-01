@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
-import User from "./user";
 import api from "../api";
 import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import SearchStatus from "../components/searchStatus";
+import UsersTable from "./usersTable";
 
 const Users = ({ users: allUsers, onDelete }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +32,7 @@ const Users = ({ users: allUsers, onDelete }) => {
 
     const filteredUsers = selectedProf ? allUsers.filter(user => user.profession.name === selectedProf.name) : allUsers;
     const count = filteredUsers.length;
-    const userCrop = paginate(filteredUsers, currentPage, pageSize);
+    const usersCrop = paginate(filteredUsers, currentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
     };
@@ -53,31 +53,7 @@ const Users = ({ users: allUsers, onDelete }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus users={filteredUsers} />
-                {count > 0 && (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Качества</th>
-                                <th scope="col">Профессия</th>
-                                <th scope="col">Встретился, раз</th>
-                                <th scope="col">Оценка</th>
-                                <th scope="col">Избранное</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userCrop.map((user) => (
-                                <User
-                                    key={user._id}
-                                    user={user}
-                                    onDelete={onDelete}
-                                    bookmark={user.bookmark}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
-                )}
+                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={count}
