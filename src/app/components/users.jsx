@@ -33,11 +33,7 @@ const Users = ({ users: allUsers, onDelete }) => {
     };
 
     const handleSort = (item) => {
-        if (sortBy.iter === item) {
-            setSortBy((prevState) => ({ ...prevState, order: prevState.order === "asc" ? "desc" : "asc" }));
-        } else {
-            setSortBy({ iter: item, order: "asc" });
-        }
+        setSortBy(item);
     };
 
     const filteredUsers = selectedProf ? allUsers.filter(user => user.profession.name === selectedProf.name) : allUsers;
@@ -64,7 +60,7 @@ const Users = ({ users: allUsers, onDelete }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus users={filteredUsers} />
-                {count > 0 && <UsersTable users={usersCrop} onSort={handleSort} onDelete={onDelete} />}
+                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} onSort={handleSort} currentSort={sortBy} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={count}
