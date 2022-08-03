@@ -23,15 +23,17 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+                        {
+                            columns[column].path
+                                ? columns[column].path === selectedSort.path
+                                    ? selectedSort.order === "asc"
+                                        ? <i className="bi bi-caret-up-fill"></i>
+                                        : <i className="bi bi-caret-down-fill"></i>
+                                    : null
+                                : null
+                        }
                     </th>
                 ))}
-                {/* <th onClick={() => handleSort("name")} scope="col">Имя</th>
-                <th scope="col">Качества</th>
-                <th onClick={() => handleSort("profession.name")} scope="col">Профессия</th>
-                <th onClick={() => handleSort("completedMeetings")} scope="col">Встретился, раз</th>
-                <th onClick={() => handleSort("rate")} scope="col">Оценка</th>
-                <th onClick={() => handleSort("bookmark")} scope="col">Избранное</th>
-                <th /> */}
             </tr>
         </thead>
     );
