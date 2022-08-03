@@ -8,7 +8,7 @@ import SearchStatus from "../components/searchStatus";
 import UsersTable from "./usersTable";
 import _ from "lodash";
 
-const Users = ({ users: allUsers, onDelete }) => {
+const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState([]);
     const [selectedProf, setSelectedProf] = useState();
@@ -38,7 +38,7 @@ const Users = ({ users: allUsers, onDelete }) => {
 
     const filteredUsers = selectedProf ? allUsers.filter(user => user.profession.name === selectedProf.name) : allUsers;
     const count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
@@ -60,7 +60,7 @@ const Users = ({ users: allUsers, onDelete }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus users={filteredUsers} />
-                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} onSort={handleSort} selectedSort={sortBy} />}
+                {count > 0 && <UsersTable users={usersCrop} onDelete={onDelete} onToggleBookMark={onToggleBookMark} onSort={handleSort} selectedSort={sortBy} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={count}
@@ -77,6 +77,7 @@ const Users = ({ users: allUsers, onDelete }) => {
 
 Users.propTypes = {
     onDelete: PropTypes.func.isRequired,
+    onToggleBookMark: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

@@ -10,15 +10,27 @@ const App = () => {
     }, []);
 
     const handleDelete = (userId) => {
-        setUsers((prevState) =>
-            prevState.filter((user) => user._id !== userId)
+        setUsers(users.filter((user) => user._id !== userId)
+        );
+    };
+
+    const handleToggleBookMark = (id) => {
+        setUsers(
+            users.map((user) => {
+                if (user._id === id) {
+                    return { ...user, bookmark: !user.bookmark };
+                }
+                return user;
+            })
         );
     };
 
     return (
-        <>
-            <Users users={users} onDelete={handleDelete} />
-        </>
+        <div>
+            {users && (
+                <Users onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} users={users} />
+            )}
+        </div>
     );
 };
 

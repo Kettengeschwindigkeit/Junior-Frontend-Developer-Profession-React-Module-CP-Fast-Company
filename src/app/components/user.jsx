@@ -1,15 +1,9 @@
-import React, { useState } from "react";
-import Quality from "./qualitie";
+import React from "react";
 import PropTypes from "prop-types";
+import Quality from "./quality";
+import BookMark from "./bookmark";
 
 const User = (props) => {
-    let [bookmark, setBookmark] = useState(props.bookmark);
-
-    const onToggle = () => {
-        bookmark = !bookmark;
-        setBookmark(bookmark);
-    };
-
     return (
         <tr>
             <td>{props.user.name}</td>
@@ -22,13 +16,7 @@ const User = (props) => {
             <td>{props.user.completedMeetings}</td>
             <td>{props.user.rate}</td>
             <td>
-                <button onClick={onToggle}>
-                    <i
-                        className={
-                            bookmark ? "bi bi-bookmark-fill" : "bi bi-bookmark"
-                        }
-                    ></i>
-                </button>
+                <BookMark status={props.bookmark} onClick={() => props.onToggleBookmark(props._id)} />
             </td>
             <td>
                 <button
@@ -43,8 +31,10 @@ const User = (props) => {
 };
 
 User.propTypes = {
+    _id: PropTypes.string.isRequired,
     bookmark: PropTypes.bool.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onToggleBookmark: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired
 };
 
