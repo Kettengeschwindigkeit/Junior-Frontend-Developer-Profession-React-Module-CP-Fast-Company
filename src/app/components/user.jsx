@@ -19,7 +19,7 @@ const User = (props) => {
                 <QualitiesList qualities={user.qualities} />
                 <p>{`completedMeetings: ${user.completedMeetings}`}</p>
                 <h2>{`Rate: ${user.rate}`}</h2>
-                <button><Link to='/users'>Все пользователи</Link></button>
+                <Link to='/users'><button>Все пользователи</button></Link>
             </div>
         );
     };
@@ -27,7 +27,6 @@ const User = (props) => {
 };
 
 User.propTypes = {
-    users: PropTyoes.array.isRequired,
     id: PropTyoes.string.isRequired
 };
 

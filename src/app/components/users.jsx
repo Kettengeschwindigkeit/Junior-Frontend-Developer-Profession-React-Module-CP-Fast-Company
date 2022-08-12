@@ -10,13 +10,13 @@ import User from "./user";
 import _ from "lodash";
 
 const Users = () => {
+    const [users, setUsers] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const { userId } = useParams();
     const pageSize = 8;
-
-    const [users, setUsers] = useState();
 
     useEffect(() => {
         api.users.fetchAll().then(response => setUsers(response));
@@ -58,8 +58,6 @@ const Users = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
-
-    const { userId } = useParams();
 
     if (users) {
         const filteredUsers = selectedProf ? users.filter(user => user.profession._id === selectedProf._id) : users;
