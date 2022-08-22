@@ -11,10 +11,16 @@ const Login = () => {
         }));
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(data);
+    };
+
     return (
-        <form action="">
+        <form onSubmit={handleSubmit}>
             <TextField label="Email" name="email" value={data.email} onChange={handleChange} />
             <TextField label="Password" type="password" name="password" value={data.password} onChange={handleChange} />
+            <button type="submit">Submit</button>
         </form>
     );
 };
