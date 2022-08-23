@@ -49,6 +49,8 @@ const Login = () => {
         return Object.keys(errors).length === 0;
     };
 
+    const isValid = Object.keys(errors).length === 0;
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
@@ -60,7 +62,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
             <TextField label="Email" name="email" value={data.email} onChange={handleChange} error={errors.email} />
             <TextField label="Password" type="password" name="password" value={data.password} onChange={handleChange} error={errors.password} />
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={!isValid}>Submit</button>
         </form>
     );
 };
