@@ -25,6 +25,16 @@ const Login = () => {
         password: {
             isRequired: {
                 message: "Password is required"
+            },
+            isCapitalSymbol: {
+                message: "Password must contain at least one uppercase character"
+            },
+            isContainDigit: {
+                message: "Password must contain at least one digit"
+            },
+            min: {
+                message: "Password must contain at leasr 8 characters",
+                value: 8
             }
         }
     };
