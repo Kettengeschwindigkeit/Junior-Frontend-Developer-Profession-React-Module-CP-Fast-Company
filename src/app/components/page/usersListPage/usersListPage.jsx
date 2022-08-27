@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { paginate } from "../utils/paginate";
-import Pagination from "./pagination";
-import api from "../api";
-import GroupList from "./groupList";
-import SearchStatus from "./searchStatus";
-import UsersTable from "./usersTable";
-import User from "./user";
+import { paginate } from "../../../utils/paginate";
+import Pagination from "../../common/pagination";
+import api from "../../../api";
+import GroupList from "../../common/groupList";
+import SearchStatus from "../../ui/searchStatus";
+import UsersTable from "../../ui/usersTable";
+import UserPage from "../userPage/userPage";
 import _ from "lodash";
 
-const Users = () => {
+const UsersListPage = () => {
     const [users, setUsers] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -73,7 +73,7 @@ const Users = () => {
         const filteredUsers = selectedProf
             ? users.filter(user => user.profession._id === selectedProf._id)
             : inputValue
-                ? users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase()))
+                ? users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase().trim()))
                 : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
@@ -82,7 +82,7 @@ const Users = () => {
         return (
             <div className="d-flex">
                 {userId
-                    ? <User users={users} id={userId} />
+                    ? <UserPage users={users} id={userId} />
                     : <>
                         {professions && (
                             <div className="d-flex flex-column flex-shrink-0 p-3">
@@ -125,4 +125,4 @@ const Users = () => {
     return "Loading...";
 };
 
-export default Users;
+export default UsersListPage;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTyoes from "prop-types";
-import api from "../api";
-import QualitiesList from "./qualitiesList";
+import api from "../../../api";
+import QualitiesList from "../../ui/qualities/qualitiesList";
 import { Link } from "react-router-dom";
 
-const User = (props) => {
+const UserPage = (props) => {
     const [user, setUser] = useState();
 
     useEffect(() => {
@@ -26,8 +26,8 @@ const User = (props) => {
     return "Loading...";
 };
 
-User.propTypes = {
+UserPage.propTypes = {
     id: PropTyoes.string.isRequired
 };
 
-export default User;
+export default UserPage;
