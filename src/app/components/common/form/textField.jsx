@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 
 const TextField = ({ label, type, name, value, onChange, error }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ TextField.propTypes = {
     name: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    error: string
+    error: PropTypes.string
 };
 
 export default TextField;

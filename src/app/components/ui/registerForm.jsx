@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
+import SelectField from "../common/form/selectField";
+import api from "../../api";
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: "", password: "" });
+    const [data, setData] = useState({ email: "", password: "", profession: "" });
+    const [professions, setProfession] = useState();
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfession(data));
+    }, []);
 
     const handleChange = ({ target }) => {
         setData((prevState) => ({
@@ -62,6 +69,7 @@ const RegisterForm = () => {
         <form onSubmit={handleSubmit}>
             <TextField label="Email" name="email" value={data.email} onChange={handleChange} error={errors.email} />
             <TextField label="Password" type="password" name="password" value={data.password} onChange={handleChange} error={errors.password} />
+            <SelectField label="Choose your profession" defaultOption="Choose..." options={professions} onChange={handleChange} value={data.profession} error={errors.profession} />
             <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Submit</button>
         </form>
     );
