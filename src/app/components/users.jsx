@@ -10,10 +10,10 @@ import User from "./user";
 import _ from "lodash";
 
 const Users = () => {
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState();
-    const [selectedProf, setSelectedProf] = useState();
+    const [professions, setProfession] = useState([]);
+    const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
     const [inputValue, setInputValue] = useState("");
     const { userId } = useParams();
@@ -21,10 +21,7 @@ const Users = () => {
 
     useEffect(() => {
         api.users.fetchAll().then(response => setUsers(response));
-    }, []);
-
-    useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfession(data));
+        api.professions.fetchAll().then(data => setProfession(data));
     }, []);
 
     useEffect(() => {
@@ -33,7 +30,6 @@ const Users = () => {
 
     const clearFilter = () => {
         setSelectedProf();
-        console.log(users.length);
     };
 
     const handleDelete = (userId) => {
@@ -69,11 +65,11 @@ const Users = () => {
         );
     };
 
-    if (users) {
+    if (users.length > 0) {
         const filteredUsers = selectedProf
             ? users.filter(user => user.profession._id === selectedProf._id)
             : inputValue
-                ? users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase()))
+                ? users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase().trim()))
                 : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
@@ -99,8 +95,6 @@ const Users = () => {
                         <div className="d-flex flex-column">
                             <SearchStatus users={filteredUsers} />
                             <input type="text" placeholder="Search..." onChange={handleSearchByName} value={inputValue} />
-                            <ul>
-                            </ul>
                             {count > 0 && <UsersTable
                                 users={usersCrop}
                                 onSort={handleSort}

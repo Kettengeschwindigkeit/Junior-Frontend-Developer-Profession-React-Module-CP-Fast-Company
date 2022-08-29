@@ -16,7 +16,7 @@ const SearchStatus = (props) => {
         );
     } else {
         return (
-            <span className="badge bg-primary">
+            <span className="badge bg-primary mb-2">
                 {props.users.length} человек тусанет с тобой сегодня
             </span>
         );
