@@ -5,9 +5,10 @@ import SelectField from "../common/form/selectField";
 import api from "../../api";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectFiled";
+import CheckBoxField from "../common/form/checkBoxField";
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: "", password: "", profession: "", sex: "male", qualities: [] });
+    const [data, setData] = useState({ email: "", password: "", profession: "", sex: "male", qualities: [], license: false });
     const [qualities, setQualities] = useState({});
     const [professions, setProfession] = useState();
     const [errors, setErrors] = useState({});
@@ -46,6 +47,16 @@ const RegisterForm = () => {
             min: {
                 message: "Password must contain at leasr 8 characters",
                 value: 8
+            }
+        },
+        profession: {
+            isRequired: {
+                message: "You should specify profession"
+            }
+        },
+        license: {
+            isRequired: {
+                message: "You can't use our service without accept with license agreement"
             }
         }
     };
@@ -86,6 +97,7 @@ const RegisterForm = () => {
                 label="Choose you sex"
             />
             <MultiSelectField options={qualities} onChange={handleChange} name="qualities" label="Choose your qualities" />
+            <CheckBoxField value={data.license} onChange={handleChange} name="license" error={errors.license}>Accept with<a>license agreement</a></CheckBoxField>
             <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Submit</button>
         </form>
     );
