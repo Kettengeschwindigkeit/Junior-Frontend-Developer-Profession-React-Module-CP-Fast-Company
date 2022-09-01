@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-// import { validator } from "../../utils/validator";
+import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
 import TextField from "../common/form/textField";
-import * as yup from "yup";
 
 const LoginForm = () => {
     const [data, setData] = useState({ email: "", password: "", stayOn: false });
@@ -15,74 +14,44 @@ const LoginForm = () => {
         }));
     };
 
-    const validateSchema = yup.object().shape({
-        password: yup
-            .string()
-            .required("Password field is required")
-            .matches(
-                /(?=.*[A-Z])/,
-                "Password must contain at least one uppercase character"
-            )
-            .matches(
-                /(?=.*[0-9])/,
-                "Password must contain at least one digit"
-            )
-            .matches(
-                /(?=.*[!@#$%^&*])/,
-                "Password must contain at least one special character !@#$%^&*"
-            )
-            .matches(
-                /(?=.{8,})/,
-                "Password must contain at leasr 8 characters"
-            ),
-        email: yup
-            .string()
-            .required("Email field is required")
-            .email("Email is invalid")
-    });
-
-    // const validatorConfig = {
-    //     email: {
-    //         isRequired: {
-    //             message: "Email field is required"
-    //         },
-    //         isEmail: {
-    //             message: "Email is invalid"
-    //         }
-    //     },
-    //     password: {
-    //         isRequired: {
-    //             message: "Password field is required"
-    //         },
-    //         isCapitalSymbol: {
-    //             message: "Password must contain at least one uppercase character"
-    //         },
-    //         isContainDigit: {
-    //             message: "Password must contain at least one digit"
-    //         },
-    //         min: {
-    //             message: "Password must contain at leasr 8 characters",
-    //             value: 8
-    //         }
-    //     },
-    //     profession: {
-    //         isRequired: {
-    //             message: "Profession field is required"
-    //         }
-    //     }
-    // };
+    const validatorConfig = {
+        email: {
+            isRequired: {
+                message: "Email field is required"
+            },
+            isEmail: {
+                message: "Email is invalid"
+            }
+        },
+        password: {
+            isRequired: {
+                message: "Password field is required"
+            },
+            isCapitalSymbol: {
+                message: "Password must contain at least one uppercase character"
+            },
+            isContainDigit: {
+                message: "Password must contain at least one digit"
+            },
+            min: {
+                message: "Password must contain at leasr 8 characters",
+                value: 8
+            }
+        },
+        profession: {
+            isRequired: {
+                message: "Profession field is required"
+            }
+        }
+    };
 
     useEffect(() => {
         validate();
     }, [data]);
 
     const validate = () => {
-        // const errors = validator(data, validatorConfig);
-        // setErrors(errors);
-        validateSchema
-            .validate(data)
-            .then(() => setErrors({}))
-            .catch((err) => setErrors({ [err.path]: err.message }));
+        const errors = validator(data, validatorConfig);
+        setErrors(errors);
         return Object.keys(errors).length === 0;
     };
 

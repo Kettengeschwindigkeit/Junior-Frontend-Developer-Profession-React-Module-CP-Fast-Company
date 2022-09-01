@@ -84,7 +84,7 @@ const RegisterForm = () => {
         <form onSubmit={handleSubmit}>
             <TextField label="Email" name="email" value={data.email} onChange={handleChange} error={errors.email} />
             <TextField label="Password" type="password" name="password" value={data.password} onChange={handleChange} error={errors.password} />
-            <SelectField label="Choose your profession" defaultOption="Choose..." options={professions} onChange={handleChange} value={data.profession} error={errors.profession} />
+            <SelectField label="Choose your profession" defaultOption="Choose..." name="profession" options={professions} onChange={handleChange} value={data.profession} error={errors.profession} />
             <RadioField
                 options={[
                     { name: "Male", value: "male" },
@@ -96,7 +96,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 label="Choose you sex"
             />
-            <MultiSelectField options={qualities} onChange={handleChange} name="qualities" label="Choose your qualities" />
+            <MultiSelectField options={qualities} onChange={handleChange} defaultValues={data.qualities} name="qualities" label="Choose your qualities" />
             <CheckBoxField value={data.license} onChange={handleChange} name="license" error={errors.license}>Accept with<a>license agreement</a></CheckBoxField>
             <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Submit</button>
         </form>
