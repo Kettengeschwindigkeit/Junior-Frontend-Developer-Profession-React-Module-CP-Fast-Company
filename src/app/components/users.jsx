@@ -10,21 +10,48 @@ import User from "./user";
 import _ from "lodash";
 
 const Users = () => {
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState();
-    const [selectedProf, setSelectedProf] = useState();
+    const [professions, setProfession] = useState([]);
+    const [selectedProf, setSelectedProf] = useState(null);
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [inputValue, setInputValue] = useState("");
     const { userId } = useParams();
     const pageSize = 8;
 
     useEffect(() => {
         api.users.fetchAll().then(response => setUsers(response));
+        api.professions.fetchAll().then(data => setProfession(data));
     }, []);
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
+
+    const clearFilter = () => {
+        setSelectedProf();
+    };
+
     const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId)
-        );
+        setUsers(users.filter((user) => user._id !== userId));
+    };
+
+    const handlePageChange = (pageIndex) => {
+        setCurrentPage(pageIndex);
+    };
+
+    const handleProffessionSelect = item => {
+        setInputValue("");
+        setSelectedProf(item);
+    };
+
+    const handleSearchByName = (e) => {
+        clearFilter();
+        setInputValue(e.target.value);
+    };
+
+    const handleSort = (item) => {
+        setSortBy(item);
     };
 
     const handleToggleBookMark = (id) => {
@@ -38,35 +65,16 @@ const Users = () => {
         );
     };
 
-    useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfession(data));
-    }, []);
-
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedProf]);
-
-    const handleProffessionSelect = item => {
-        setSelectedProf(item);
-    };
-
-    const handlePageChange = (pageIndex) => {
-        console.log("page: ", pageIndex);
-        setCurrentPage(pageIndex);
-    };
-
-    const handleSort = (item) => {
-        setSortBy(item);
-    };
-
-    if (users) {
-        const filteredUsers = selectedProf ? users.filter(user => user.profession._id === selectedProf._id) : users;
+    if (users.length > 0) {
+        const filteredUsers = selectedProf
+            ? users.filter(user => user.profession._id === selectedProf._id)
+            : inputValue
+                ? users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase().trim()))
+                : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
-        const clearFilter = () => {
-            setSelectedProf();
-        };
+
         return (
             <div className="d-flex">
                 {userId
@@ -86,6 +94,7 @@ const Users = () => {
                         )}
                         <div className="d-flex flex-column">
                             <SearchStatus users={filteredUsers} />
+                            <input type="text" placeholder="Search..." onChange={handleSearchByName} value={inputValue} />
                             {count > 0 && <UsersTable
                                 users={usersCrop}
                                 onSort={handleSort}
