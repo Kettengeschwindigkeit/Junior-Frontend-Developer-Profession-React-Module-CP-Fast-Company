@@ -44,7 +44,8 @@ const ReactChildren = () => {
             </CollapseWrapper>
             <CardWrapper>
                 <i className="bi bi-lightbulb"></i>Если <code>children</code> —
-                это <code>Fragment</code>, он будет рассматриваться как целый
+                это
+                <code>Fragment</code>, он будет рассматриваться как целый
                 потомок, а элементы внутри не будут пройдены.
             </CardWrapper>
 
