@@ -60,12 +60,14 @@ const RegisterForm = () => {
             setQualities(qualitiesList);
         });
     }, []);
+
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
     };
+
     const validatorConfig = {
         email: {
             isRequired: {
