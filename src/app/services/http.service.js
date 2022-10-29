@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import config from "../config.json";
 
-axios.defaults.baseURL = config.apiEndpoint
+axios.defaults.baseURL = config.apiEndpoint;
 
 axios.interceptors.response.use(
     (res) => res,
@@ -15,7 +15,7 @@ axios.interceptors.response.use(
             console.log(error);
             toast.error("Something was wrong. Try it later");
         }
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
 );
 
