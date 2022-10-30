@@ -7,11 +7,8 @@ axios.defaults.baseURL = configFile.apiEndpoint;
 axios.interceptors.request.use(
     function (config) {
         if (configFile.isFirebase) {
-            // console.log(config);
             const containSlash = /\/$/gi.test(config.url);
-            // config.url = "profession/123343340f9"
             config.url = (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
-            // console.log(config.url)
         }
         return config;
     },
@@ -20,8 +17,20 @@ axios.interceptors.request.use(
     }
 );
 
+function transformData(data) {
+    return data ? Object.keys(data).map(key => ({
+        ...data[key]
+    })) : [];
+};
+
 axios.interceptors.response.use(
-    (res) => res,
+    (res) => {
+        if (configFile.isFirebase) {
+            res.data = { content: transformData(res.data) };
+            console.log(res.data);
+        }
+        return res;
+    },
     function (error) {
         console.log("Interceptor");
 
