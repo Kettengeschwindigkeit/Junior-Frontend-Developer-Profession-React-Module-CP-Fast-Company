@@ -1,29 +1,3 @@
-
-{
-    "user": {
-        "67rdca3eeb7f6fgeed471815": {
-            "_id": "67rdca3eeb7f6fgeed471815",
-            "name": "Джон Дориан",
-            "email": "Jony7351@tw.com",
-            "password": "b2C!9bmE",
-            "profession": "67rdca3eeb7f6fgeed471818",
-            "qualities": [
-                "67rdca3eeb7f6fgeed471198",
-                "67rdca3eeb7f6fgeed471102",
-                "67rdca3eeb7f6fgeed471100"
-            ],
-            "completedMeetings": 36,
-            "rate": 2.5
-        }
-    },
-    "quality": {
-
-    },
-    "profession": {
-        
-    }
-}
-
 [
     {
         "_id": "67rdca3eeb7f6fgeed471815",
