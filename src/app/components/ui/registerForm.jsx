@@ -26,28 +26,28 @@ const RegisterForm = () => {
 
     const [errors, setErrors] = useState({});
 
-    const getProfessionById = (id) => {
-        for (const prof of professionsList) {
-            if (prof.value === id) {
-                return prof.label;
-            }
-        }
-    };
+    // const getProfessionById = (id) => {
+    //     for (const prof of professionsList) {
+    //         if (prof.value === id) {
+    //             return prof.label;
+    //         }
+    //     }
+    // };
 
-    const getQualities = (elements) => {
-        const qualitiesArray = [];
-        for (const elem of elements) {
-            for (const quality in qualitiesList) {
-                if (elem.value === qualitiesList[quality].value) {
-                    qualitiesArray.push({
-                        value: qualitiesList[quality].value,
-                        label: qualitiesList[quality].label
-                    });
-                }
-            }
-        }
-        return qualitiesArray;
-    };
+    // const getQualities = (elements) => {
+    //     const qualitiesArray = [];
+    //     for (const elem of elements) {
+    //         for (const quality in qualitiesList) {
+    //             if (elem.value === qualitiesList[quality].value) {
+    //                 qualitiesArray.push({
+    //                     value: qualitiesList[quality].value,
+    //                     label: qualitiesList[quality].label
+    //                 });
+    //             }
+    //         }
+    //     }
+    //     return qualitiesArray;
+    // };
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -106,14 +106,14 @@ const RegisterForm = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        const { profession, qualities } = data;
+        // const { profession, qualities } = data;
         const newData = {
             ...data,
             qualities: data.qualities.map((q) => q.value)
-        }
-        console.log(newData)
+        };
+        console.log(newData);
     };
-    
+
     return (
         <form onSubmit={handleSubmit}>
             <TextField
