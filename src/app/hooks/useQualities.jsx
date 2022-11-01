@@ -44,7 +44,10 @@ export const QualitiesProvider = ({ children }) => {
         setError(message);
     };
 
-    return <QualitiesContext.Provider value={{ isLoading, qualities, getQualities }}>{children}</QualitiesContext.Provider>;
+    return (
+        <QualitiesContext.Provider value={{ isLoading, qualities, getQualities }}>
+            {children}
+        </QualitiesContext.Provider>);
 };
 
 QualitiesProvider.propTypes = {
