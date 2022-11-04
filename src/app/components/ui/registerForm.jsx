@@ -8,8 +8,10 @@ import CheckBoxField from "../common/form/checkBoxField";
 import { useQualities } from "../../hooks/useQualities";
 import { useProfessions } from "../../hooks/useProfession";
 import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 const RegisterForm = () => {
+    const history = useHistory();
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -27,29 +29,6 @@ const RegisterForm = () => {
     const professionsList = professions.map((p) => ({ label: p.name, value: p._id }));
 
     const [errors, setErrors] = useState({});
-
-    // const getProfessionById = (id) => {
-    //     for (const prof of professionsList) {
-    //         if (prof.value === id) {
-    //             return prof.label;
-    //         }
-    //     }
-    // };
-
-    // const getQualities = (elements) => {
-    //     const qualitiesArray = [];
-    //     for (const elem of elements) {
-    //         for (const quality in qualitiesList) {
-    //             if (elem.value === qualitiesList[quality].value) {
-    //                 qualitiesArray.push({
-    //                     value: qualitiesList[quality].value,
-    //                     label: qualitiesList[quality].label
-    //                 });
-    //             }
-    //         }
-    //     }
-    //     return qualitiesArray;
-    // };
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -114,6 +93,7 @@ const RegisterForm = () => {
         };
         try {
             await signUp(newData);
+            history.push("/");
         } catch (error) {
             setErrors(error);
         }
