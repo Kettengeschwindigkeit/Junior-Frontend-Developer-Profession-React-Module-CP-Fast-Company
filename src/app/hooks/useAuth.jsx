@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import axios from "axios";
 import userService from "../services/user.service";
-import { setTokens } from "../services/localStorage.service";
+import localStorageService, { setTokens } from "../services/localStorage.service";
 
 const httpAuth = axios.create();
 const AuthContext = React.createContext();
@@ -47,6 +47,7 @@ const AuthProvider = ({ children }) => {
         try {
             const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
             setTokens(data);
+            getUserData();
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -80,6 +81,21 @@ const AuthProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     };
+
+    async function getUserData() {
+        try {
+            const { content } = await userService.getCurrentUser();
+            setUser(content);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    };
+
+    useEffect(() => {
+        if (localStorageService.getAccessToken()) {
+            getUserData();
+        }
+    }, []);
 
     useEffect(() => {
         if (error !== null) {
