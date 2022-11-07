@@ -5,6 +5,7 @@ import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
 import { orderBy } from "lodash";
 import { displayDate } from "../../../utils/displayDate";
+import { useUser } from "../../../hooks/useUsers";
 
 const CommentCard = ({ id, userId, createdAt, content, handleDelete }) => {
     const [user, setUser] = useState();
@@ -51,16 +52,13 @@ const CommentCard = ({ id, userId, createdAt, content, handleDelete }) => {
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
-    const [user, setUser] = useState();
-    const [users, setUsers] = useState([]);
+    const [users] = useState([]);
     const [comments, setComments] = useState([]);
     const [selectValue, setSelectValue] = useState("");
     const [textareaValue, setTextareaValue] = useState("");
 
-    useEffect(() => {
-        api.users.getById(userId).then((data) => setUser(data));
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
+    const { getUserById } = useUser();
+    const user = getUserById(userId);
 
     useEffect(() => {
         api.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
@@ -108,11 +106,7 @@ const UserPage = ({ userId }) => {
                                 </button>
                                 <div className="d-flex flex-column align-items-center text-center position-relative">
                                     <img
-                                        src={`https://avatars.dicebear.com/api/avataaars/${(
-                                            Math.random() + 1
-                                        )
-                                            .toString(36)
-                                            .substring(7)}.svg`}
+                                        src={user.image}
                                         className="rounded-circle shadow-1-strong me-3"
                                         alt="avatar"
                                         width="65"
