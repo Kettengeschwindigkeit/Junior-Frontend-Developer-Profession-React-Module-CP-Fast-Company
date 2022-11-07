@@ -7,6 +7,7 @@ import { orderBy } from "lodash";
 import { displayDate } from "../../../utils/displayDate";
 import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
+import { CommentsProvider } from "../../../hooks/useComments";
 
 const CommentCard = ({ id, userId, createdAt, content, handleDelete }) => {
     const [user, setUser] = useState();
@@ -146,41 +147,43 @@ const UserPage = ({ userId }) => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <div className="card mb-2">
-                            {" "}
-                            <div className="card-body">
-                                <h2>New comment</h2>
-                                <div className="mb-4">
-                                    <select className="form-select" name="userId" value={selectValue} onChange={handleSelectChange}>
-                                        <option value="" disabled>Выберите пользователя</option>
-                                        {users && users.map(user => <option key={user._id} value={user._id}>{user.name}</option>)}
-                                    </select>
+                        <CommentsProvider>
+                            <div className="card mb-2">
+                                {" "}
+                                <div className="card-body">
+                                    <h2>New comment</h2>
+                                    <div className="mb-4">
+                                        <select className="form-select" name="userId" value={selectValue} onChange={handleSelectChange}>
+                                            <option value="" disabled>Выберите пользователя</option>
+                                            {users && users.map(user => <option key={user._id} value={user._id}>{user.name}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Сообщение</label>
+                                        <textarea className="form-control" id="exampleFormControlTextarea1" style={{ minHeight: "100px" }} value={textareaValue} onChange={handleTextareaChange}></textarea>
+                                    </div>
+                                    <button className="btn btn-primary float-end" onClick={handleAddComment}>Опубликовать</button>
                                 </div>
-                                <div className="mb-4">
-                                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Сообщение</label>
-                                    <textarea className="form-control" id="exampleFormControlTextarea1" style={{ minHeight: "100px" }} value={textareaValue} onChange={handleTextareaChange}></textarea>
+                            </div>
+                            {sortedComments.length > 0 && <div className="card mb-3">
+                                <div className="card-body">
+                                    <h2>Comments</h2>
+                                    <hr />
+                                    {sortedComments.map(comment => {
+                                        return (
+                                            <CommentCard
+                                                key={comment._id}
+                                                id={comment._id}
+                                                userId={comment.userId}
+                                                createdAt={comment.created_at}
+                                                content={comment.content}
+                                                handleDelete={onDelete}
+                                            />
+                                        );
+                                    })}
                                 </div>
-                                <button className="btn btn-primary float-end" onClick={handleAddComment}>Опубликовать</button>
-                            </div>
-                        </div>
-                        {sortedComments.length > 0 && <div className="card mb-3">
-                            <div className="card-body">
-                                <h2>Comments</h2>
-                                <hr />
-                                {sortedComments.map(comment => {
-                                    return (
-                                        <CommentCard
-                                            key={comment._id}
-                                            id={comment._id}
-                                            userId={comment.userId}
-                                            createdAt={comment.created_at}
-                                            content={comment.content}
-                                            handleDelete={onDelete}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </div>}
+                            </div>}
+                        </CommentsProvider>
                     </div>
                 </div>
             </div>
