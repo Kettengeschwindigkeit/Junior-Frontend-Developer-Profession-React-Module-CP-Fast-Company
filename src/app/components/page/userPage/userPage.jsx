@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { orderBy } from "lodash";
 import { displayDate } from "../../../utils/displayDate";
 import { useUser } from "../../../hooks/useUsers";
+import { useAuth } from "../../../hooks/useAuth";
 
 const CommentCard = ({ id, userId, createdAt, content, handleDelete }) => {
     const [user, setUser] = useState();
@@ -57,6 +58,7 @@ const UserPage = ({ userId }) => {
     const [selectValue, setSelectValue] = useState("");
     const [textareaValue, setTextareaValue] = useState("");
 
+    const { currentUser } = useAuth();
     const { getUserById } = useUser();
     const user = getUserById(userId);
 
@@ -101,9 +103,9 @@ const UserPage = ({ userId }) => {
                     <div className="col-md-4 mb-3">
                         <div className="card mb-3">
                             <div className="card-body">
-                                <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={handleClick}>
+                                {currentUser._id === user._id && <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={handleClick}>
                                     <i className="bi bi-gear"></i>
-                                </button>
+                                </button>}
                                 <div className="d-flex flex-column align-items-center text-center position-relative">
                                     <img
                                         src={user.image}
