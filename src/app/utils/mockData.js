@@ -4,8 +4,6 @@ import qualities from "../mockData/qualities.json";
 import users from "../mockData/users.json";
 import httpService from "../services/http.service";
 
-console.log(professions);
-
 const useMockData = () => {
     const statusConsts = {
         idle: "Not Started",
