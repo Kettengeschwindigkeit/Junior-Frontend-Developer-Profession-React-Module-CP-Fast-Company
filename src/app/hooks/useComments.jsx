@@ -38,9 +38,20 @@ export const CommentsProvider = ({ children }) => {
         console.log(comment);
     };
 
+    async function getComments() {
+        try {
+            const { content } = await commentService.getComments(userId);
+            console.log(content);
+            setComments(content);
+        } catch (error) {
+            errorCatcher(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        setComments(null);
-        setLoading(false);
+        getComments();
     }, []);
 
     useEffect(() => {
