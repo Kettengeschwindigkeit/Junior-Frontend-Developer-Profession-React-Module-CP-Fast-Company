@@ -4,7 +4,7 @@ import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
-import { CommentsProvider, useComments } from "../../../hooks/useComments";
+import { CommentsProvider } from "../../../hooks/useComments";
 import Comments from "../../ui/comments";
 
 const UserPage = ({ userId }) => {
