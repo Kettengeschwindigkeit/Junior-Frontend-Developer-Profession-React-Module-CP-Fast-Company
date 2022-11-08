@@ -1,101 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import api from "../../../api";
 import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
-import { orderBy } from "lodash";
-import { displayDate } from "../../../utils/displayDate";
 import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
-import { CommentsProvider } from "../../../hooks/useComments";
-
-const CommentCard = ({ id, userId, createdAt, content, handleDelete }) => {
-    const [user, setUser] = useState();
-
-    const date = displayDate(createdAt);
-
-    useEffect(() => {
-        api.users.getById(userId).then((data) => setUser(data));
-    }, []);
-
-    return (
-        <div className="bg-light card-body  mb-3">
-            <div className="row">
-                <div className="col">
-                    <div className="d-flex flex-start ">
-                        <img
-                            src={`https://avatars.dicebear.com/api/avataaars/${(
-                                Math.random() + 1
-                            )
-                                .toString(36)
-                                .substring(7)}.svg`}
-                            className="rounded-circle shadow-1-strong me-3"
-                            alt="avatar"
-                            width="65"
-                            height="65"
-                        />
-                        <div className="flex-grow-1 flex-shrink-1">
-                            <div className="mb-4">
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <p className="mb-1 ">{user?.name}<span className="small">&nbsp;{date}</span></p>
-                                    <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => handleDelete(id)}>
-                                        <i className="bi bi-x-lg"></i>
-                                    </button>
-                                </div>
-                                <p className="small mb-0">{content}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
+import { CommentsProvider, useComments } from "../../../hooks/useComments";
+import Comments from "../../ui/comments";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
-    const [users] = useState([]);
-    const [comments, setComments] = useState([]);
-    const [selectValue, setSelectValue] = useState("");
-    const [textareaValue, setTextareaValue] = useState("");
 
     const { currentUser } = useAuth();
     const { getUserById } = useUser();
     const user = getUserById(userId);
 
-    useEffect(() => {
-        api.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
-    }, [selectValue]);
-
-    const handleAddComment = () => {
-        const data = {
-            userId: selectValue,
-            pageId: userId,
-            content: textareaValue
-        };
-        api.comments.add(data).then((data) => setComments([...comments, data]));
-        setTextareaValue("");
-    };
-
     const handleClick = () => {
         history.push(`/users/${userId}/edit`);
     };
-
-    const handleSelectChange = (e) => {
-        console.log(e.target);
-        setSelectValue(e.target.value);
-    };
-
-    const handleTextareaChange = (e) => {
-        setTextareaValue(e.target.value);
-    };
-
-    const onDelete = (id) => {
-        setComments(comments.filter(comment => comment._id !== id));
-        api.comments.remove(id);
-    };
-
-    const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
 
     if (user) {
         return (
@@ -148,41 +69,7 @@ const UserPage = ({ userId }) => {
                     </div>
                     <div className="col-md-8">
                         <CommentsProvider>
-                            <div className="card mb-2">
-                                {" "}
-                                <div className="card-body">
-                                    <h2>New comment</h2>
-                                    <div className="mb-4">
-                                        <select className="form-select" name="userId" value={selectValue} onChange={handleSelectChange}>
-                                            <option value="" disabled>Выберите пользователя</option>
-                                            {users && users.map(user => <option key={user._id} value={user._id}>{user.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Сообщение</label>
-                                        <textarea className="form-control" id="exampleFormControlTextarea1" style={{ minHeight: "100px" }} value={textareaValue} onChange={handleTextareaChange}></textarea>
-                                    </div>
-                                    <button className="btn btn-primary float-end" onClick={handleAddComment}>Опубликовать</button>
-                                </div>
-                            </div>
-                            {sortedComments.length > 0 && <div className="card mb-3">
-                                <div className="card-body">
-                                    <h2>Comments</h2>
-                                    <hr />
-                                    {sortedComments.map(comment => {
-                                        return (
-                                            <CommentCard
-                                                key={comment._id}
-                                                id={comment._id}
-                                                userId={comment.userId}
-                                                createdAt={comment.created_at}
-                                                content={comment.content}
-                                                handleDelete={onDelete}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>}
+                            <Comments />
                         </CommentsProvider>
                     </div>
                 </div>
@@ -195,14 +82,6 @@ const UserPage = ({ userId }) => {
 
 UserPage.propTypes = {
     userId: PropTypes.string.isRequired
-};
-
-CommentCard.propTypes = {
-    id: PropTypes.string,
-    userId: PropTypes.string,
-    createdAt: PropTypes.string,
-    content: PropTypes.string,
-    handleDelete: PropTypes.func
 };
 
 export default UserPage;
