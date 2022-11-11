@@ -10,8 +10,11 @@ const ProtectedRoute = ({ component: Component, children, ...rest }) => {
         <Route {...rest} render={(props) => {
             if (!currentUser) {
                 return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
+            } else if (rest.computedMatch.params.edit && (currentUser._id !== rest.computedMatch.params.userId)) {
+                return <Redirect to={{ pathname: `/users/${currentUser._id}`, state: { from: props.location } }} />;
+            } else {
+                return Component ? <Component {...props} /> : children;
             }
-            return Component ? <Component {...props} /> : children;
         }} />
     );
 };
