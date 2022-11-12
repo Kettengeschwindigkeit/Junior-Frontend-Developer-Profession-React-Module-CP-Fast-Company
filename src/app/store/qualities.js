@@ -6,7 +6,8 @@ const qualitiesSlice = createSlice({
     initialState: {
         entities: null,
         isLoading: true,
-        error: null
+        error: null,
+        lastFetch: null
     },
     reducers: {
         qualitiesRequested: (state) => {
@@ -14,6 +15,7 @@ const qualitiesSlice = createSlice({
         },
         qualitiesReceived: (state, action) => {
             state.entities = action.payload;
+            state.lastFetch = Date.now();
             state.isLoading = false;
         },
         qaulitiesRequestFailed: (state, action) => {
@@ -26,13 +28,24 @@ const qualitiesSlice = createSlice({
 const { reducer: qualitiesReducer, actions } = qualitiesSlice;
 const { qualitiesRequested, qualitiesReceived, qaulitiesRequestFailed } = actions;
 
-export const loadQualitiesList = () => async (dispatch) => {
-    dispatch(qualitiesRequested());
-    try {
-        const { content } = await qualityService.get();
-        dispatch(qualitiesReceived(content));
-    } catch (error) {
-        dispatch(qaulitiesRequestFailed(error.message));
+function isOutdated(date) {
+    if (Date.now() - date > 10 * 60 * 1000) {
+        return true;
+    }
+    return false;
+};
+
+export const loadQualitiesList = () => async (dispatch, getState) => {
+    const { lastFetch } = getState().qualities;
+    if (isOutdated(lastFetch)) {
+        console.log("lastFetch", lastFetch);
+        dispatch(qualitiesRequested());
+        try {
+            const { content } = await qualityService.get();
+            dispatch(qualitiesReceived(content));
+        } catch (error) {
+            dispatch(qaulitiesRequestFailed(error.message));
+        }
     }
 };
 
