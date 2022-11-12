@@ -26,7 +26,7 @@ const qualitiesSlice = createSlice({
 const { reducer: qualitiesReducer, actions } = qualitiesSlice;
 const { qualitiesRequested, qualitiesReceived, qaulitiesRequestFailed } = actions;
 
-export const loadQialitiesList = () => async (dispatch) => {
+export const loadQualitiesList = () => async (dispatch) => {
     dispatch(qualitiesRequested());
     try {
         const { content } = await qualityService.get();
@@ -34,6 +34,24 @@ export const loadQialitiesList = () => async (dispatch) => {
     } catch (error) {
         dispatch(qaulitiesRequestFailed(error.message));
     }
+};
+
+export const getQualities = () => (state) => state.qualities.entities;
+export const getQualitiesLoadingStatus = () => (state) => state.qualities.isLoading;
+export const getQualitiesByIds = (qualitiesIds) => (state) => {
+    if (state.qualities.entities) {
+        const qualitiesArray = [];
+        for (const qualId of qualitiesIds) {
+            for (const quality of state.qualities.entities) {
+                if (quality._id === qualId) {
+                    qualitiesArray.push(quality);
+                    break;
+                }
+            }
+        }
+        return qualitiesArray;
+    }
+    return [];
 };
 
 export default qualitiesReducer;

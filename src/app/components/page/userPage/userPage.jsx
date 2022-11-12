@@ -12,6 +12,7 @@ const UserPage = ({ userId }) => {
 
     const { currentUser } = useAuth();
     const { getUserById } = useUser();
+
     const user = getUserById(userId);
 
     const handleClick = () => {

@@ -7,17 +7,16 @@ import Login from "./layouts/login";
 import Main from "./layouts/main";
 import NavBar from "./components/ui/navBar";
 import { ProfessionProvider } from "./hooks/useProfession";
-import { QualitiesProvider } from "./hooks/useQualities";
 import AuthProvider from "./hooks/useAuth";
 import ProtectedRoute from "./components/protectedRoute";
 import LogOut from "./layouts/logOut";
-import { loadQialitiesList } from "./store/qualities";
+import { loadQualitiesList } from "./store/qualities";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(loadQialitiesList());
+        dispatch(loadQualitiesList());
     }, []);
 
     return (
@@ -25,15 +24,13 @@ function App() {
             <AuthProvider>
                 <NavBar />
                 <ProfessionProvider>
-                    <QualitiesProvider>
-                        <Switch>
-                            <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
-                            <Route path="/login/:type?" component={Login} />
-                            <Route path="/logout" component={LogOut} />
-                            <Route path="/" exact component={Main} />
-                            <Redirect to="/" />
-                        </Switch>
-                    </QualitiesProvider>
+                    <Switch>
+                        <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
+                        <Route path="/login/:type?" component={Login} />
+                        <Route path="/logout" component={LogOut} />
+                        <Route path="/" exact component={Main} />
+                        <Redirect to="/" />
+                    </Switch>
                 </ProfessionProvider>
             </AuthProvider>
             <ToastContainer />
