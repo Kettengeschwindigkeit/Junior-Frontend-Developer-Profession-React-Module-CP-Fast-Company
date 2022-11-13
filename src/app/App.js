@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/protectedRoute";
 import LogOut from "./layouts/logOut";
 import { loadQualitiesList } from "./store/qualities";
 import { loadProfessionsList } from "./store/professions";
+import { loadUsersList } from "./store/users";
 
 function App() {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function App() {
     useEffect(() => {
         dispatch(loadProfessionsList());
         dispatch(loadQualitiesList());
+        dispatch(loadUsersList());
     }, []);
 
     return (
