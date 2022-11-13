@@ -2,20 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
-import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
 import { CommentsProvider } from "../../../hooks/useComments";
 import Comments from "../../ui/comments";
 import { useSelector } from "react-redux";
 import { getProfessionById } from "../../../store/professions";
+import { getUserById } from "../../../store/users";
 
 const UserPage = ({ userId }) => {
-    const history = useHistory();
-
     const { currentUser } = useAuth();
-    const { getUserById } = useUser();
 
-    const user = getUserById(userId);
+    const history = useHistory();
+    const user = useSelector(getUserById(userId));
 
     const handleClick = () => {
         history.push(`/users/${userId}/edit`);
