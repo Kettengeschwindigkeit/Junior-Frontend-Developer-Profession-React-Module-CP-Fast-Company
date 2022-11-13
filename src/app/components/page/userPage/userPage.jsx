@@ -6,6 +6,8 @@ import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
 import { CommentsProvider } from "../../../hooks/useComments";
 import Comments from "../../ui/comments";
+import { useSelector } from "react-redux";
+import { getProfessionById } from "../../../store/professions";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
@@ -39,7 +41,7 @@ const UserPage = ({ userId }) => {
                                     />
                                     <div className="mt-3">
                                         <h4>{user.name}</h4>
-                                        <p className="text-secondary mb-1">{user.profession.name}</p>
+                                        <p className="text-secondary mb-1">{useSelector(getProfessionById(user.profession)).name}</p>
                                         <div className="text-muted">
                                             <i className="bi bi-caret-down-fill text-primary" role="button"></i>
                                             <i className="bi bi-caret-up text-secondary" role="button"></i>

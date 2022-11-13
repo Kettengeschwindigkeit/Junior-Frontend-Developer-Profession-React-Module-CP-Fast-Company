@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { paginate } from "../../../utils/paginate";
 import Pagination from "../../common/pagination";
@@ -7,7 +8,6 @@ import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
-import { useProfessions } from "../../../hooks/useProfession";
 import { useAuth } from "../../../hooks/useAuth";
 
 const UsersListPage = () => {
@@ -18,8 +18,8 @@ const UsersListPage = () => {
     const pageSize = 8;
 
     const { currentUser } = useAuth();
-    const { isLoading: professionsLoading, professions } = useProfessions();
     const { users } = useUser();
+    const { isLoading: professionsLoading, entities: professions } = useSelector(state => state.professions);
 
     const handleDelete = (userId) => {
         // setUsers(users.filter((user) => user._id !== userId));

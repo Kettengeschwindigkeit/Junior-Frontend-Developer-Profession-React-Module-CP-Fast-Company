@@ -4,29 +4,30 @@ import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import PropTypes from "prop-types";
 import { useAuth } from "../../../hooks/useAuth";
-import { useProfessions } from "../../../hooks/useProfession";
 import { getQualities, getQualitiesByIds, getQualitiesLoadingStatus } from "../../../store/qualities";
 import RadioField from "../../common/form/radioField";
+import { getProfessionById, getProfessionsLoadingStatus } from "../../../store/professions";
 
 const EditUserPage = ({ userId }) => {
     const [currentName, setCurrentName] = useState("");
     const [currentEmail, setCurrentEmail] = useState("");
-    const [currentProf, setCurrentProf] = useState({});
+    const [currentProf, setCurrentProf] = useState("");
     const [currentQualities, setCurrentQualities] = useState([]);
     const [currentSex, setCurrentSex] = useState("");
 
     const { currentUser } = useAuth();
-    const { professions } = useProfessions();
-    const { getProfession } = useProfessions();
     const { updateUser } = useAuth();
 
+    const professions = useSelector(state => state.professions.entities);
     const qualities = useSelector(getQualities());
+
+    const professionsLoading = useSelector(getProfessionsLoadingStatus());
     const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
 
     const history = useHistory();
 
-    const userProfession = getProfession(currentUser.profession);
-    const userQualities = (useSelector(getQualitiesByIds(currentUser.qualities)).map(q => ({ label: q.name, value: q._id })));
+    const userProfession = useSelector(getProfessionById(currentUser.profession));
+    const userQualities = useSelector(getQualitiesByIds(currentUser.qualities)).map(q => ({ label: q.name, value: q._id }));
 
     const professionsList = professions.map(p => ({ label: p.name, value: p._id }));
     const qualitiesList = qualities.map(q => ({ label: q.name, value: q._id }));
@@ -65,21 +66,13 @@ const EditUserPage = ({ userId }) => {
         setCurrentName(currentUser.name);
         setCurrentEmail(currentUser.email);
         setCurrentSex(currentUser.sex);
-    }, []);
-
-    useEffect(() => {
-        if (userProfession) {
-            setCurrentProf({ value: userProfession._id, label: userProfession.name });
-        }
-    }, [userProfession]);
-
-    useEffect(() => {
+        setCurrentProf({ value: userProfession._id, label: userProfession.name });
         setCurrentQualities(userQualities);
     }, []);
 
     return (
         <>
-            <div className="container mt-5">
+            {qualities && professions && !qualitiesLoading && !professionsLoading && <div className="container mt-5">
                 <button className="btn btn-primary" onClick={handleGoBack}>Назад</button>
                 <div className="row">
                     <div className="col-md-6 offset-md-3 shadow p-4">
@@ -88,13 +81,13 @@ const EditUserPage = ({ userId }) => {
                                 <div className="mb-4">
                                     <label className="form-label" htmlFor="name">Имя</label>
                                     <div className="input-group">
-                                        <input className="form-control" type="text" name="name" value={currentName} onChange={(e) => setCurrentName(e.target.value)} />
+                                        <input className="form-control" type="text" name="name" value={currentName} onChange={e => setCurrentName(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="mb-4">
                                     <label className="form-label" htmlFor="email">Электронная почта</label>
                                     <div className="input-group">
-                                        <input className="form-control" type="text" name="email" value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)} />
+                                        <input className="form-control" type="text" name="email" value={currentEmail} onChange={e => setCurrentEmail(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="mb-4">
@@ -121,7 +114,7 @@ const EditUserPage = ({ userId }) => {
                             : <h6>Loading...</h6>}
                     </div>
                 </div>
-            </div>
+            </div>}
         </>
     );
 };
