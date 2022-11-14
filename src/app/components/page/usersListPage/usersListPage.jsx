@@ -7,8 +7,7 @@ import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import { useAuth } from "../../../hooks/useAuth";
-import { getUsersList } from "../../../store/users";
+import { getCurrentUserId, getUsersList } from "../../../store/users";
 
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,8 +17,8 @@ const UsersListPage = () => {
     const pageSize = 8;
 
     const users = useSelector(getUsersList());
+    const currentUserId = useSelector(getCurrentUserId());
 
-    const { currentUser } = useAuth();
     const { isLoading: professionsLoading, entities: professions } = useSelector(state => state.professions);
 
     const handleDelete = (userId) => {
@@ -74,7 +73,7 @@ const UsersListPage = () => {
                         JSON.stringify(selectedProf)
                 )
                 : data;
-        return filteredUsers.filter((u) => u._id !== currentUser._id);
+        return filteredUsers.filter((u) => u._id !== currentUserId._id);
     };
 
     if (users) {
