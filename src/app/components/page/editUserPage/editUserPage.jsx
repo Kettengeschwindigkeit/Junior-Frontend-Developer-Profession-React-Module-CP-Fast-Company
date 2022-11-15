@@ -7,6 +7,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { getQualities, getQualitiesByIds, getQualitiesLoadingStatus } from "../../../store/qualities";
 import RadioField from "../../common/form/radioField";
 import { getProfessionById, getProfessionsLoadingStatus } from "../../../store/professions";
+import { getCurrentUserData } from "../../../store/users";
 
 const EditUserPage = ({ userId }) => {
     const [currentName, setCurrentName] = useState("");
@@ -15,9 +16,9 @@ const EditUserPage = ({ userId }) => {
     const [currentQualities, setCurrentQualities] = useState([]);
     const [currentSex, setCurrentSex] = useState("");
 
-    const { currentUser } = useAuth();
     const { updateUser } = useAuth();
 
+    const currentUser = useSelector(getCurrentUserData());
     const professions = useSelector(state => state.professions.entities);
     const qualities = useSelector(getQualities());
 

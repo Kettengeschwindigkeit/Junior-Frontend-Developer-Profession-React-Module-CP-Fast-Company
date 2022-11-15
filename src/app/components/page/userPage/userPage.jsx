@@ -2,16 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 import { CommentsProvider } from "../../../hooks/useComments";
 import Comments from "../../ui/comments";
 import { useSelector } from "react-redux";
 import { getProfessionById } from "../../../store/professions";
-import { getUserById } from "../../../store/users";
+import { getCurrentUserId, getUserById } from "../../../store/users";
 
 const UserPage = ({ userId }) => {
-    const { currentUser } = useAuth();
-
+    const currentUseId = useSelector(getCurrentUserId());
     const history = useHistory();
     const user = useSelector(getUserById(userId));
 
@@ -26,7 +24,7 @@ const UserPage = ({ userId }) => {
                     <div className="col-md-4 mb-3">
                         <div className="card mb-3">
                             <div className="card-body">
-                                {currentUser._id === user._id && <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={handleClick}>
+                                {currentUseId === user._id && <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={handleClick}>
                                     <i className="bi bi-gear"></i>
                                 </button>}
                                 <div className="d-flex flex-column align-items-center text-center position-relative">
