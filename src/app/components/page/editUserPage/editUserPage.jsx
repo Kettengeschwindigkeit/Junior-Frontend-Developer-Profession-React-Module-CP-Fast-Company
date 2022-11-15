@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import PropTypes from "prop-types";
-import { useAuth } from "../../../hooks/useAuth";
 import { getQualities, getQualitiesByIds, getQualitiesLoadingStatus } from "../../../store/qualities";
 import RadioField from "../../common/form/radioField";
 import { getProfessionById, getProfessionsLoadingStatus } from "../../../store/professions";
-import { getCurrentUserData } from "../../../store/users";
+import { getCurrentUserData, updateUser } from "../../../store/users";
 
 const EditUserPage = ({ userId }) => {
     const [currentName, setCurrentName] = useState("");
@@ -16,9 +15,10 @@ const EditUserPage = ({ userId }) => {
     const [currentQualities, setCurrentQualities] = useState([]);
     const [currentSex, setCurrentSex] = useState("");
 
-    const { updateUser } = useAuth();
+    const dispatch = useDispatch();
 
     const currentUser = useSelector(getCurrentUserData());
+
     const professions = useSelector(state => state.professions.entities);
     const qualities = useSelector(getQualities());
 
@@ -55,11 +55,12 @@ const EditUserPage = ({ userId }) => {
             _id: currentUser._id,
             name: currentName,
             email: currentEmail,
+            image: currentUser.image,
             profession: currentProf.value,
             sex: currentSex,
             qualities: currentQualities.map(q => q.value)
         };
-        updateUser(data);
+        dispatch(updateUser(data));
         history.push(`/users/${userId}`);
     };
 
