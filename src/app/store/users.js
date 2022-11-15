@@ -47,12 +47,18 @@ const usersSlice = createSlice({
         },
         userCreated: (state, action) => {
             state.entities.push(action.payload);
+        },
+        userLoggedOut: (state) => {
+            state.entities = null;
+            state.isLoggedIn = false;
+            state.auth = null;
+            state.dataLoaded = false;
         }
     }
 });
 
 const { reducer: usersReducer, actions } = usersSlice;
-const { usersRequested, usersReceived, usersRequestFailed, authRequestSuccess, authRequestFailed, userCreated } = actions;
+const { usersRequested, usersReceived, usersRequestFailed, authRequestSuccess, authRequestFailed, userCreated, userLoggedOut } = actions;
 
 const authRequested = createAction("users/authRequested");
 const userCreateRequested = createAction("users/userCreateRequested");
@@ -69,6 +75,12 @@ export const login = ({ payload, redirect }) => async (dispatch) => {
     } catch (error) {
         dispatch(authRequestFailed(error.message));
     }
+};
+
+export const logOut = () => (dispatch) => {
+    localStorageService.removeAuthData();
+    dispatch(userLoggedOut());
+    history.push("/");
 };
 
 const createUser = (payload) => async (dispatch) => {
