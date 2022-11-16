@@ -19,18 +19,46 @@ const commentsSlice = createSlice({
         commentsRequestFailed: (state, action) => {
             state.error = action.payload;
             state.isLoading = false;
+        },
+        commentAdded: (state, action) => {
+            state.entities.push(action.payload);
+            state.isLoading = false;
+        },
+        commentDeleted: (state, action) => {
+            state.entities = state.entities.filter(c => c._id !== action.payload);
+            state.isLoading = false;
         }
     }
 });
 
 const { reducer: commentsReducer, actions } = commentsSlice;
-const { commentsRequested, commentsReceived, commentsRequestFailed } = actions;
+const { commentsRequested, commentsReceived, commentsRequestFailed, commentAdded, commentDeleted } = actions;
 
 export const loadCommentsList = (userId) => async (dispatch) => {
     dispatch(commentsRequested());
     try {
         const { content } = await commentService.getComments(userId);
         dispatch(commentsReceived(content));
+    } catch (error) {
+        dispatch(commentsRequestFailed(error.message));
+    }
+};
+
+export const addComment = (payload) => async (dispatch) => {
+    dispatch(commentsRequested());
+    try {
+        const { content } = await commentService.createComment(payload);
+        dispatch(commentAdded(content));
+    } catch (error) {
+        dispatch(commentsRequestFailed(error.message));
+    }
+};
+
+export const removeComment = (commentId) => async (dispatch) => {
+    dispatch(commentsRequested());
+    try {
+        await commentService.removeComment(commentId);
+        dispatch(commentDeleted(commentId));
     } catch (error) {
         dispatch(commentsRequestFailed(error.message));
     }
