@@ -15,16 +15,13 @@ const Comments = () => {
     const currentUseId = useSelector(getCurrentUserId());
 
     const { userId } = useParams();
-    // const { createComment, removeComment } = useComments();
 
     const handleSubmit = (data) => {
         const comment = { ...data, _id: nanoid(), pageId: userId, created_at: Date.now(), userId: currentUseId };
         dispatch(addComment(comment));
-        // createComment(data);
     };
 
     const handleRemoveComment = (id) => {
-        // removeComment(id);
         dispatch(removeComment(id));
     };
 

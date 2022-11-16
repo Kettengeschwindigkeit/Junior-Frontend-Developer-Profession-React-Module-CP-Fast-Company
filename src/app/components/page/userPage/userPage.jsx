@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Qualities from "../../ui/qualities";
 import { useHistory } from "react-router-dom";
-import { CommentsProvider } from "../../../hooks/useComments";
 import Comments from "../../ui/comments";
 import { useSelector } from "react-redux";
 import { getProfessionById } from "../../../store/professions";
@@ -67,9 +66,7 @@ const UserPage = ({ userId }) => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <CommentsProvider>
-                            <Comments />
-                        </CommentsProvider>
+                        <Comments />
                     </div>
                 </div>
             </div>
